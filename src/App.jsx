@@ -1,4 +1,3 @@
-import React from 'react';
 import {Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar'; // Import your Navbar component
 import Sidebar from './components/Sidebar'; // Import your Sidebar component
@@ -7,8 +6,10 @@ import AddBooks from './components/AddBooks'; // Example route component
 import Settings from './components/Settings'; // Example route component
 import BookSearch from './components/BookSearch';
 import HeroSection from './components/HeroSection';
+import AdminLogin from './components/AdminLogin';
 
 function App() {
+  console.log(localStorage)
   return (
     <div className="flex">
       <Sidebar /> {/* Your Sidebar */}
@@ -21,6 +22,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/search-book" element={<BookSearch />} />
+          <Route path='/login' element={<AdminLogin />} />
           {/* Add more routes as needed */}
         </Routes>
       </div>

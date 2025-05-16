@@ -7,6 +7,7 @@ export default function AddBooks() {
   const [cover, setCover] = useState(null);
   const [coverPreview, setCoverPreview] = useState(null);
   const [message, setMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -15,12 +16,12 @@ export default function AddBooks() {
       setCoverPreview(URL.createObjectURL(file));
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!title || !author || !year || !cover) {
       setMessage('Please fill out all fields and upload a cover image.');
+      setShowModal(true);
       return;
     }
 
@@ -37,7 +38,9 @@ export default function AddBooks() {
       });
 
       const data = await res.json();
+
       setMessage(data.message || 'Book added successfully!');
+      setShowModal(true);
 
       // Reset form
       setTitle('');
@@ -48,6 +51,7 @@ export default function AddBooks() {
     } catch (error) {
       console.error('Error:', error);
       setMessage('Something went wrong. Please try again.');
+      setShowModal(true);
     }
   };
 
@@ -55,9 +59,26 @@ export default function AddBooks() {
     <div className="bg-gray-900 text-white min-h-screen p-8 ml-64 pt-24">
       <h1 className="text-3xl font-bold text-teal-400 mb-4">📚 Add a New Book</h1>
 
-      {message && (
-        <div className="mb-6 text-center text-sm text-teal-300 font-semibold">
-          {message}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+          <div className="bg-white text-black w-96 max-w-full rounded-lg shadow-lg p-6 relative animate-fade-in">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl font-bold focus:outline-none"
+            >
+              ×
+            </button>
+            <h2 className="text-xl font-semibold mb-4">📢 Message</h2>
+            <p className="mb-6 text-base">{message}</p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-5 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+              >
+                OK
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
